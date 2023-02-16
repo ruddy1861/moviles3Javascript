@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmuebles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Inmuebles</h1>
+        <form>
+            <div class="mb-3">
+                <label for="idinmueble" class="form-label">Id Inmueble</label>
+                <input type="text" class="form-control" id="idinmueble">
+                <span id="midinmueble" style="color:red;font-weight:bold"></span>
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion">
+                <span id="mdireccion" style="color:red;font-weight:bold"></span>
+            </div>
+            <div class="mb-3">
+                <label for="precio" class="form-label">Precio</label>
+                <input type="text" class="form-control" id="precio">
+                <span id="mprecio" style="color:red;font-weight:bold"></span>
+            </div>
+            <label for="">Estado</label>
+            <div class="form-check">
+                <input type="radio" name="estado" id="disponible" class="form-check-input">
+                <label class="form-check-label" for="disponible">
+                  Disponible
+                </label>
+              </div>
+              <div class="form-check">
+                <input type="radio" name="estado" id="nodisponible" class="form-check-input">
+                <label class="form-check-label" for="nodisponible">
+                  No Disponible
+                </label>
+              </div>
+              <br>
+            <button type="button" class="btn btn-primary" id="btnenviar">Enviar</button>
+            <button type="button" class="btn btn-warning" id="btnbuscar">Buscar</button>
+            <button type="button" class="btn btn-danger" id="btnlistar">Listar</button>
+        </form>
+    </div>
+    <script>
+        //Referenciar cada elemento de html con sus id
+        let idinmueble = document.getElementById('idinmueble');
+        let midinmueble = document.querySelector('#midinmueble');
+        let direccion = document.getElementById('direccion');
+        let mdireccion = document.querySelector('#mdireccion');
+        let precio =  document.getElementById('precio');
+        let mprecio = document.querySelector('#mprecio');
+        let disponible = document.getElementById('disponible');
+        let nodisponible = document.getElementById('nodisponible');
+        let btnenviar = document.querySelector('#btnenviar');
+        let btnbuscar = document.querySelector('#btnbuscar');
+        let btnlistar = document.getElementById('btnlistar');
+
+        //Arreglo de objetos para 5 inmuebles
+        let inmuebles = [
+            {idinmueble:"01",direccion:"calle 2 # 8-29",precio:250,estado:true},
+            {idinmueble:"02",direccion:"calle 20 # 70-04",precio:350,estado:false},
+            {idinmueble:"03",direccion:"calle 15 # 38-40",precio:450,estado:true},
+            {idinmueble:"04",direccion:"calle 18 # 80-11",precio:550,estado:true},
+            {idinmueble:"05",direccion:"calle 3 # 78-19",precio:650,estado:false}
+        ]
+        //Eventos 
+        idinmueble.addEventListener('focus',()=>{
+            midinmueble.textContent = "Debe ingresar el idinmueble"
+        })
+        idinmueble.addEventListener('blur',()=>{
+            midinmueble.textContent = " "
+        })
+
+        direccion.addEventListener('focus',()=>{
+            mdireccion.textContent = "Debe ingresar la direccion"
+        })
+        direccion.addEventListener('blur',()=>{
+            mdireccion.textContent = " "
+        })
+
+        precio.addEventListener('focus',()=>{
+            mprecio.textContent = "Debe ingresar el precio"
+        })
+        precio.addEventListener('blur',()=>{
+            mprecio.textContent = " "
+        })
+
+        //Evento click de enviar
+        btnenviar.addEventListener('click',function(){
+            if(idinmueble.value != ""){
+                if(direccion.value !=""){
+                    if(precio.value != ""){
+                        //Buscar el idinmueble en el arreglo inmuebles
+                        let encontro = inmuebles.find(item => item.idinmueble == idinmueble.value)
+                        if(encontro != undefined ){
+                            midinmueble.textContent = "El id del inmueble Ya Existe!"
+                        }
+                        else{
+                            midinmueble.textContent = ""
+                            //Guardar el nuevo inmueble
+                            let mestado = disponible.checked ? true : false;
+                            inmuebles.push({idinmueble:idinmueble.value,direccion:direccion.value,precio:precio.value,estado:mestado})
+                            console.log(inmuebles)
+                            alert("Inmueble guardado correctamente...")
+
+                        }
+
+                    }else{
+                        mprecio.textContent = "El precio es obligatorio *"
+                    }
+                }else{
+                   mdireccion.textContent = "La direccion es obligatorio *" 
+                }
+            }else{
+                midinmueble.textContent = "El id inmueble es obligatorio *"
+            }
+        })
+
+        btnbuscar.addEventListener('click',()=>{
+            let objinm = inmuebles.find(inm => inm.idinmueble == idinmueble.value);
+            if(objinm != undefined){
+                //desestructuar el objecto de objinm (Creacion de variables con esto keys)
+                const {idinmueble,direccion,precio,estado} = objinm
+                //asignar estas variables a los inputs respectivos 
+                direccion.value=direccion; 
+                precio.value = precio
+                mestado = estado
+
+                document.getElementById('direccion').value=direccion;
+                console.log(direccion)
+            }
+        })
+
+
+
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+
+
+</html>
